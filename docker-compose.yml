@@ -1,7 +1,7 @@
 version: '2'
 services:
     front:
-        image: lb
+        image: strm/nginx-balancer
         container_name: load-balancer
         ports:
             - "80:8080"
