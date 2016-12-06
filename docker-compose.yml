@@ -1,0 +1,13 @@
+version: '2'
+services:
+    front:
+        image: lb
+        container_name: load-balancer
+        ports:
+            - "80:8080"
+        environment:
+            - "NODES=web1:80 web2:80"
+    web1:
+        image: strm/helloworld-http
+    web2:
+        image: strm/helloworld-http

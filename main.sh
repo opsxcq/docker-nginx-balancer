@@ -10,12 +10,15 @@ fi
 # Create nginx configuration
 cat > /nginx.conf << EOF
 
+daemon off;
 worker_processes 8;
+user balancer;
 
 events { worker_connections 1024; }
 
 http {
-
+error_log /dev/stdout info;
+        access_log /dev/stdout;
         upstream web-balancer {
               least_conn;
 $(for NODE in $NODES; do
@@ -25,8 +28,9 @@ $(for NODE in $NODES; do
         }
          
         server {
-              listen 80;
-         
+              access_log /dev/stdout;
+                  error_log /dev/stdout;
+              listen 8080;
               location / {
                 proxy_pass http://web-balancer;
                 proxy_http_version 1.1;

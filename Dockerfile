@@ -9,12 +9,13 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN useradd --system --uid 666 -M --shell /usr/sbin/nologin balancer
-
-USER balancer
-
-EXPOSE 80
+RUN useradd --system --uid 666 -M --shell /usr/sbin/nologin balancer && \
+    touch /nginx.conf && \
+    chown balancer /nginx.conf && \
+    chown balancer -R /var/lib/nginx && \
+    chown balancer -R /var/log/nginx/
 
 COPY main.sh /
 
+EXPOSE 80
 ENTRYPOINT ["/main.sh"]
